@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Leaderboard</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+        table {
+            width: 50%;
+            margin: auto;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h2>Live Leaderboard</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Option</th>
+                <th>Votes</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+            <tr>
+                <td colspan="2">Waiting for updates...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        var socket = io("http://localhost:3000", { transports: ["websocket"] });
+    
+        socket.on("connect", function () {
+            console.log("✅ Connected to WebSocket server");
+        });
+    
+        socket.on("leaderboard-update", function (data) {
+            console.log("🔄 Leaderboard update received:", data);
+            updateLeaderboard(data);
+        });
+    
+        socket.on("disconnect", function () {
+            console.log("❌ Disconnected from server");
+        });
+    </script>
+    
+
+        function updateLeaderboard(data) {
+            var tbody = document.getElementById("leaderboard-body");
+            tbody.innerHTML = ""; // Clear previous leaderboard
+
+            if (data.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='2'>No data available</td></tr>";
+                return;
+            }
+
+            data.forEach(item => {
+                var row = document.createElement("tr");
+                row.innerHTML = `<td>${item.option_name}</td><td>${item.votes}</td>`;
+                tbody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
