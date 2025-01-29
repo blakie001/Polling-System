@@ -48,10 +48,12 @@ npm start
 
 For Step 7: Frontend Integration (only for real time leaderboard fetching) : 
 
-
 save the file "test-socket.html" in your desktop
 
-run this command in new terminal "/cd desktop"
+run this command in new terminal 
+"/cd desktop"
+
 http-server
 
-then go to this link in your browser : "http://localhost:8080/test.html"
+then go to this link in your browser : 
+"http://localhost:8080/test.html"
