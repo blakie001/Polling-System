@@ -53,15 +53,13 @@
         });
     
         socket.on("leaderboard-update", function (data) {
-            console.log("🔄 Leaderboard update received:", data);
+            console.log("🔄 Leaderboard update received:", data); // Debugging data structure
             updateLeaderboard(data);
         });
     
         socket.on("disconnect", function () {
             console.log("❌ Disconnected from server");
         });
-    </script>
-    
 
         function updateLeaderboard(data) {
             var tbody = document.getElementById("leaderboard-body");
@@ -72,9 +70,13 @@
                 return;
             }
 
+            // Debugging: Check structure of the data
+            console.log("Received data structure:", data);
+
             data.forEach(item => {
+                console.log("Item:", item); // Check the content of each item
                 var row = document.createElement("tr");
-                row.innerHTML = `<td>${item.option_name}</td><td>${item.votes}</td>`;
+                row.innerHTML = `<td>${item.option_name || 'N/A'}</td><td>${item.votes || 0}</td>`;
                 tbody.appendChild(row);
             });
         }
